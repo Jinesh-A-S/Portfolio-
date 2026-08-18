@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jinesh A Suvarna — Mechanical Engineer</title>
+<meta name="description" content="Jinesh A Suvarna — Mechanical Engineering undergraduate. UAV systems, CAD design, prototyping. Bengaluru.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#06090c;
+    --bg-panel:#0c1218;
+    --bg-panel-2:#10181f;
+    --line:#1e2b34;
+    --line-soft:#152029;
+    --ink:#eef4f6;
+    --ink-soft:#8ba3ae;
+    --ink-dim:#5b707a;
+    --cyan:#37e6ff;
+    --cyan-dim:#1c7d8f;
+    --safety:#ff8a3d;
+    --safety-deep:#d9691f;
+    --max-w:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--cyan);color:#06090c;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--max-w);margin:0 auto;padding:0 28px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* animated grid + scanline backdrop */
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+  }
+  .glow-orb{
+    position:fixed;width:640px;height:640px;border-radius:50%;
+    background:radial-gradient(circle, rgba(55,230,255,.14), transparent 70%);
+    top:-220px;left:50%;transform:translateX(-50%);z-index:0;pointer-events:none;
+    filter:blur(10px);
+  }
+  .scanline{
+    position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0px, rgba(255,255,255,.012) 1px, transparent 1px, transparent 3px);
+  }
+  body > *:not(.grid-bg):not(.glow-orb):not(.scanline){position:relative;z-index:2;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--cyan);display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--cyan);display:inline-block;box-shadow:0 0 6px var(--cyan);}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(6,9,12,.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:var(--max-w);margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;letter-spacing:.04em;}
+  .brand .box{
+    width:28px;height:28px;border:1.5px solid var(--cyan);color:var(--cyan);
+    display:flex;align-items:center;justify-content:center;font-size:11px;
+    box-shadow:0 0 12px rgba(55,230,255,.35) inset;
+  }
+  nav.links{display:flex;gap:28px;font-size:13px;font-family:'JetBrains Mono',monospace;}
+  nav.links a{color:var(--ink-soft);transition:.15s;}
+  nav.links a:hover{color:var(--cyan);}
+  .nav-cta{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.05em;border:1px solid var(--safety);color:var(--safety);padding:8px 14px;transition:.15s;}
+  .nav-cta:hover{background:var(--safety);color:#06090c;box-shadow:0 0 18px rgba(255,138,61,.4);}
+  @media(max-width:720px){nav.links{display:none;}}
+
+  /* HERO */
+  .hero{padding:100px 0 70px;}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:44px;align-items:start;}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{
+    font-family:'Space Grotesk',sans-serif;font-weight:800;
+    font-size:clamp(40px,6.6vw,76px);line-height:1;letter-spacing:-.015em;margin:18px 0 20px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(90deg,var(--cyan),#7dffcf);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.lede{font-size:17px;color:var(--ink-soft);max-width:48ch;margin-bottom:30px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.03em;padding:13px 22px;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--ink);transition:.18s;}
+  .btn.primary{background:var(--safety);border-color:var(--safety-deep);color:#06090c;font-weight:600;}
+  .btn.primary:hover{background:var(--safety-deep);box-shadow:0 0 24px rgba(255,138,61,.35);transform:translateY(-1px);}
+  .btn.ghost{border-color:var(--cyan-dim);color:var(--cyan);}
+  .btn.ghost:hover{background:var(--cyan);color:#06090c;box-shadow:0 0 24px rgba(55,230,255,.3);transform:translateY(-1px);}
+
+  .radar{
+    aspect-ratio:1;border-radius:50%;border:1px solid var(--line);
+    position:relative;overflow:hidden;background:radial-gradient(circle at 50% 50%, #0c1a1f 0%, #06090c 75%);
+    box-shadow:0 0 0 1px var(--line-soft), 0 0 60px rgba(55,230,255,.06) inset;
+  }
+  .radar::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 24px, var(--line-soft) 25px),
+      linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:100% 100%, 20% 20%, 20% 20%;
+  }
+  .radar .sweep{
+    position:absolute;inset:0;
+    background:conic-gradient(from 0deg, rgba(55,230,255,.35), transparent 55deg);
+    animation:spin 4.5s linear infinite;
+    border-radius:50%;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .radar .dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--safety);box-shadow:0 0 8px var(--safety);}
+  .radar-label{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .radar-label .big{font-size:15px;color:var(--cyan);letter-spacing:.08em;}
+  .radar-label .small{font-size:10px;color:var(--ink-dim);margin-top:4px;letter-spacing:.1em;}
+
+  section{padding:84px 0;border-top:1px solid var(--line);}
+  .sec-head{margin-bottom:44px;}
+  .sec-head h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.6vw,38px);font-weight:700;margin-top:12px;}
+
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;}
+  @media(max-width:860px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{color:var(--ink-soft);font-size:16px;margin-bottom:16px;max-width:56ch;}
+  .about-grid strong{color:var(--ink);}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
+  .stat{background:var(--bg-panel);padding:24px 20px;transition:.2s;}
+  .stat:hover{background:var(--bg-panel-2);}
+  .stat .num{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:800;color:var(--cyan);text-shadow:0 0 20px rgba(55,230,255,.35);}
+  .stat .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-top:4px;}
+
+  .skill-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  @media(max-width:720px){.skill-cats{grid-template-columns:1fr;}}
+  .skill-cat{background:var(--bg-panel);padding:26px 26px 22px;transition:.2s;}
+  .skill-cat:hover{background:var(--bg-panel-2);}
+  .skill-cat h3{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .skill-cat h3::before{content:"";width:8px;height:8px;background:var(--safety);display:inline-block;box-shadow:0 0 8px var(--safety);}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--line);padding:6px 11px;color:var(--ink-soft);background:var(--bg);transition:.15s;}
+  .chip:hover{border-color:var(--cyan-dim);color:var(--cyan);}
+
+  .proj-list{display:flex;flex-direction:column;}
+  .proj{display:grid;grid-template-columns:70px 1fr auto;gap:20px;align-items:start;padding:30px 24px;border-bottom:1px solid var(--line);transition:.2s;}
+  .proj:hover{background:var(--bg-panel);}
+  .proj:first-child{border-top:1px solid var(--line);}
+  @media(max-width:720px){.proj{grid-template-columns:44px 1fr;}.proj .proj-meta{display:none;}}
+  .proj .idx{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:14px;padding-top:4px;}
+  .proj h3{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;margin-bottom:8px;}
+  .proj p{color:var(--ink-soft);font-size:14.5px;max-width:62ch;}
+  .proj .tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .proj .tags span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--safety);border:1px solid var(--safety-deep);padding:3px 8px;}
+  .proj-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);text-align:right;white-space:nowrap;padding-top:6px;}
+
+  .exp-item{display:grid;grid-template-columns:160px 1fr;gap:24px;padding:26px 0;border-bottom:1px solid var(--line);}
+  .exp-item:last-child{border-bottom:none;}
+  @media(max-width:720px){.exp-item{grid-template-columns:1fr;gap:6px;}}
+  .exp-item .period{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);}
+  .exp-item h3{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;margin-bottom:4px;}
+  .exp-item .org{font-size:13px;color:var(--ink-dim);margin-bottom:10px;}
+  .exp-item ul{padding-left:18px;color:var(--ink-soft);font-size:14.5px;display:flex;flex-direction:column;gap:6px;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
+  @media(max-width:860px){.two-col{grid-template-columns:1fr;}}
+  .edu-item{border-left:2px solid var(--cyan-dim);padding:2px 0 22px 18px;position:relative;}
+  .edu-item::before{content:"";position:absolute;left:-6px;top:2px;width:10px;height:10px;background:var(--safety);box-shadow:0 0 8px var(--safety);}
+  .edu-item h4{font-family:'Space Grotesk',sans-serif;font-size:16.5px;font-weight:700;}
+  .edu-item .when{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-dim);margin:4px 0;}
+  .cert-row{display:flex;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px;color:var(--ink-soft);}
+  .cert-row:last-child{border-bottom:none;}
+  .cert-row .src{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--cyan);white-space:nowrap;}
+
+  .contact-block{
+    background:linear-gradient(160deg,#0c1a1f,#06090c 70%);
+    border:1px solid var(--line);color:var(--ink);padding:72px 40px;position:relative;overflow:hidden;
+  }
+  .contact-block::before{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:34px 34px;pointer-events:none;opacity:.6;
+  }
+  .contact-inner{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:50px;}
+  @media(max-width:860px){.contact-inner{grid-template-columns:1fr;}}
+  .contact-block h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,46px);font-weight:800;line-height:1.08;margin-bottom:18px;}
+  .contact-block p{color:var(--ink-soft);font-size:16px;max-width:44ch;margin-bottom:26px;}
+  .clist{display:flex;flex-direction:column;}
+  .clist a,.clist .row{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:13.5px;transition:.15s;}
+  .clist a:hover{color:var(--cyan);}
+  .clist .row:last-child,.clist a:last-child{border-bottom:none;}
+  .clist .lbl{color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;font-size:11px;}
+
+  footer{padding:22px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-dim);border-top:1px solid var(--line);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* --- 3D drone canvas inside radar --- */
+  .drone-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;}
+  .radar-label{top:80%;z-index:4;}
+  .radar{isolation:isolate;}
+
+  /* --- HUD crosshair cursor --- */
+  body{cursor:none;}
+  #cursorDot{
+    position:fixed;top:0;left:0;width:4px;height:4px;background:var(--cyan);border-radius:50%;
+    pointer-events:none;z-index:300;box-shadow:0 0 8px var(--cyan);transform:translate(-50%,-50%);
+  }
+  #cursorRing{
+    position:fixed;top:0;left:0;width:32px;height:32px;border:1px solid var(--cyan-dim);border-radius:50%;
+    pointer-events:none;z-index:299;transform:translate(-50%,-50%);
+    transition:width .18s ease,height .18s ease,border-color .18s ease,box-shadow .18s ease;
+  }
+  #cursorRing::before,#cursorRing::after{content:"";position:absolute;background:var(--cyan-dim);}
+  #cursorRing::before{top:50%;left:-6px;width:6px;height:1px;}
+  #cursorRing::after{top:-6px;left:50%;width:1px;height:6px;}
+  #cursorRing.active{width:52px;height:52px;border-color:var(--safety);box-shadow:0 0 22px rgba(255,138,61,.35);}
+  @media(hover:none),(pointer:coarse){
+    body{cursor:auto;}
+    #cursorDot,#cursorRing{display:none;}
+  }
+
+  /* --- telemetry ticker --- */
+  .telemetry{font-size:11px;color:var(--ink-dim);letter-spacing:.06em;white-space:nowrap;}
+  .telemetry span{color:var(--cyan);}
+  @media(max-width:980px){.telemetry{display:none;}}
+
+  /* --- project row tilt --- */
+  .proj{transition:transform .18s ease,background .2s;will-change:transform;}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+
+<div class="grid-bg"></div>
+<div class="glow-orb"></div>
+<div class="scanline"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="box">JS</span> JINESH&nbsp;A&nbsp;SUVARNA</div>
+    <nav class="links">
+      <a href="javascript:void(0)" data-scroll-to="about">About</a>
+      <a href="javascript:void(0)" data-scroll-to="skills">Skills</a>
+      <a href="javascript:void(0)" data-scroll-to="projects">Projects</a>
+      <a href="javascript:void(0)" data-scroll-to="experience">Experience</a>
+      <a href="javascript:void(0)" data-scroll-to="contact">Contact</a>
+    </nav>
+    <div class="telemetry mono">ALT <span id="tAlt">118</span>M · SPD <span id="tSpd">42</span>KT · HDG <span id="tHdg">274</span>°</div>
+    <a class="nav-cta" href="mailto:jineshasuvarna@gmail.com">Get in touch</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">MECHANICAL ENGINEERING · SYSTEM ONLINE</div>
+      <h1>Building<br>things that <span class="accent">fly &amp; move.</span></h1>
+      <p class="lede">Final-year Mechanical Engineering undergraduate designing UAV systems, CAD models, and working prototypes — from sketch to fabricated part. Based in Bengaluru.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="javascript:void(0)" data-scroll-to="projects">View projects →</a>
+        <a class="btn ghost" href="javascript:void(0)" data-scroll-to="contact">Download résumé</a>
+      </div>
+    </div>
+    <div class="radar reveal">
+      <div class="sweep"></div>
+      <div class="dot" style="top:32%;left:64%;"></div>
+      <div class="dot" style="top:58%;left:38%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);"></div>
+      <canvas id="droneCanvas" class="drone-canvas"></canvas>
+      <div class="radar-label">
+        <div class="big" id="callsignText">CALLSIGN · JAS-01</div>
+        <div class="small">UAV · CAD · FAB · BLR</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="eyebrow">About</div>
+      <h2 class="sec-head" style="margin-bottom:20px;">Design lead by nature, fabricator by habit.</h2>
+      <p>I'm a <strong>final-year Mechanical Engineering student</strong> at JSS Academy of Technical Education, Bengaluru, with hands-on experience across <strong>UAV system design, CAD modeling, and data-driven problem-solving.</strong></p>
+      <p>My work sits between the CAD screen and the workshop bench — I model in <strong>Fusion 360</strong>, plan for manufacture, and see prototypes through to fabrication. Currently coordinating UAV design and outreach for my college's Jetayu Club, and looking for a <strong>Design, Manufacturing, or R&amp;D internship</strong> where I can add value from day one.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">7.5</div><div class="lbl">CGPA / 10</div></div>
+      <div class="stat"><div class="num">2027</div><div class="lbl">Graduating</div></div>
+      <div class="stat"><div class="num">4+</div><div class="lbl">Certifications</div></div>
+      <div class="stat"><div class="num">3</div><div class="lbl">Languages</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Technical Arsenal</div>
+      <h2>Skills &amp; Tools</h2>
+    </div>
+    <div class="skill-cats">
+      <div class="skill-cat">
+        <h3>CAD &amp; Design</h3>
+        <div class="chip-row">
+          <span class="chip">Fusion 360</span>
+          <span class="chip">Catia V5 (Basics)</span>
+          <span class="chip">AutoCAD</span>
+          <span class="chip">Assembly Design</span>
+          <span class="chip">Technical Drawing &amp; GD&amp;T</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h3>Manufacturing</h3>
+        <div class="chip-row">
+          <span class="chip">CNC Programming</span>
+          <span class="chip">Prototyping</span>
+          <span class="chip">Fabrication</span>
+          <span class="chip">Cost Estimation</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h3>Programming &amp; Analysis</h3>
+        <div class="chip-row">
+          <span class="chip">MATLAB (Basics)</span>
+          <span class="chip">Python (Basics)</span>
+          <span class="chip">Power BI</span>
+          <span class="chip">Data Visualization</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h3>Systems &amp; Delivery</h3>
+        <div class="chip-row">
+          <span class="chip">UAV &amp; Drone Systems</span>
+          <span class="chip">Project Planning</span>
+          <span class="chip">Technical Documentation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Featured Work</div>
+      <h2>Selected Projects</h2>
+    </div>
+    <div class="proj-list">
+      <div class="proj">
+        <div class="idx">01</div>
+        <div>
+          <h3>Magnet-Based Power Generator</h3>
+          <p>Designed and fabricated a working prototype converting magnetic rotational motion into electrical energy, using a ring-magnet rotor coupled to a DC motor generator and applying Faraday's Law of electromagnetic induction. Built full 3D CAD models and assembly/technical drawings in Fusion 360, ran a literature survey on generator designs, and prepared cost estimation (~₹1,075) and project planning documentation.</p>
+          <div class="tags"><span>Fusion 360</span><span>Electromagnetics</span><span>Team of 4</span></div>
+        </div>
+        <div class="proj-meta">MINI-PROJECT<br>SEP – NOV 2025</div>
+      </div>
+      <div class="proj">
+        <div class="idx">02</div>
+        <div>
+          <h3>UAV Systems — Jetayu Club</h3>
+          <p>Collaborating on the design and development of fixed-wing and multi-rotor UAV systems for research-oriented and competitive engineering projects, including technical documentation and design reports for national-level competitions such as NIDAR.</p>
+          <div class="tags"><span>UAV Design</span><span>NIDAR</span><span>Documentation</span></div>
+        </div>
+        <div class="proj-meta">CLUB PROJECT<br>2025 – 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Track Record</div>
+      <h2>Experience</h2>
+    </div>
+    <div class="exp-item">
+      <div class="period">2025 — 2026</div>
+      <div>
+        <h3>UAV Team Member &amp; Outreach Coordinator</h3>
+        <div class="org">Jetayu Club, JSSATE</div>
+        <ul>
+          <li>Collaborated on design and development of fixed-wing and multi-rotor UAV systems for research-oriented and competitive engineering projects.</li>
+          <li>Prepared technical documentation and design reports for national-level competitions, including NIDAR.</li>
+          <li>Coordinated sponsorship outreach and managed the club's technical communication and social media visibility (@jetayu_jssate).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap two-col">
+    <div>
+      <div class="eyebrow">Foundation</div>
+      <h2 class="sec-head">Education</h2>
+      <div class="edu-item">
+        <h4>B.E. Mechanical Engineering</h4>
+        <div class="when">JSS Academy of Technical Education, Bengaluru · 2023 – 2027</div>
+        <div class="mono" style="font-size:12.5px;color:var(--ink-dim);">CGPA: 7.5 / 10</div>
+      </div>
+      <div class="edu-item">
+        <h4>PCMB (Pre-University)</h4>
+        <div class="when">Mandavya Excellence PU College · 2021 – 2023</div>
+        <div class="mono" style="font-size:12.5px;color:var(--ink-dim);">84.8%</div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">Verified</div>
+      <h2 class="sec-head">Certifications</h2>
+      <div>
+        <div class="cert-row"><span>Drone Technology</span><span class="src">IISc</span></div>
+        <div class="cert-row"><span>Power BI: Data Visualization for Smart Decision Making</span><span class="src">—</span></div>
+        <div class="cert-row"><span>Digital Marketing</span><span class="src">Accenture</span></div>
+        <div class="cert-row"><span>Basics of Python</span><span class="src">Udemy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-top:none;padding:60px 0 80px;">
+  <div class="wrap">
+    <div class="contact-block">
+      <div class="contact-inner">
+        <div>
+          <div class="eyebrow">Let's build something</div>
+          <h2>Open to Design, Manufacturing &amp; R&amp;D roles.</h2>
+          <p>Currently finishing my final year and looking for an internship where I can put CAD, fabrication, and UAV systems experience to work. Reach out — I reply fast.</p>
+          <a class="btn primary" href="mailto:jineshasuvarna@gmail.com">Email me →</a>
+        </div>
+        <div class="clist">
+          <a href="mailto:jineshasuvarna@gmail.com"><span class="lbl">Email</span><span>jineshasuvarna@gmail.com</span></a>
+          <a href="tel:+919686515960"><span class="lbl">Phone</span><span>+91 96865 15960</span></a>
+          <div class="row"><span class="lbl">Location</span><span>Bengaluru, Karnataka</span></div>
+          <div class="row"><span class="lbl">Languages</span><span>English · Kannada · Hindi</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Jinesh A Suvarna — Sheet 1 of 1 — All Rights Reserved</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  },{threshold:.2});
+  els.forEach(el=>io.observe(el));
+
+  // ---------- scroll-to-section (no URL/hash change) ----------
+  document.querySelectorAll('[data-scroll-to]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(el.getAttribute('data-scroll-to'));
+      if(target){ target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ---------- unified pointer tracking ----------
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  const orb = document.querySelector('.glow-orb');
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    const x = (e.clientX / window.innerWidth - 0.5) * 40;
+    const y = (e.clientY / window.innerHeight - 0.5) * 40;
+    orb.style.transform = `translate(calc(-50% + ${x}px), ${y}px)`;
+  });
+
+  // ---------- HUD crosshair cursor ----------
+  const cursorDot = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+  let ringX = mouseX, ringY = mouseY;
+  document.querySelectorAll('a, button, .chip, .proj, .stat').forEach((el) => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('active'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('active'));
+  });
+
+  // ---------- 3D drone inside the radar (Three.js) ----------
+  const radarEl = document.querySelector('.radar');
+  const droneCanvas = document.getElementById('droneCanvas');
+  let droneGroup = null, propGroups = [], navLights = [], renderer3d = null, scene3d = null, camera3d = null;
+  let targetRoll = 0, targetPitch = 0, curRoll = 0, curPitch = 0;
+  const clockStart = performance.now();
+
+  function initDrone(){
+    if(typeof THREE === 'undefined' || !droneCanvas || !radarEl) return;
+
+    const CYAN = 0x37e6ff, SAFETY = 0xff8a3d, DARK = 0x0c1218;
+
+    scene3d = new THREE.Scene();
+    camera3d = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
+    camera3d.position.set(0, 1.6, 5.4);
+    camera3d.lookAt(0, 0, 0);
+
+    renderer3d = new THREE.WebGLRenderer({ canvas: droneCanvas, alpha: true, antialias: true });
+    renderer3d.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    scene3d.add(new THREE.AmbientLight(0x9fd8e8, 0.75));
+    const key = new THREE.DirectionalLight(CYAN, 1.0);
+    key.position.set(2, 3, 3);
+    scene3d.add(key);
+    const rim = new THREE.PointLight(SAFETY, 0.9, 12);
+    rim.position.set(-2, 0.5, 2);
+    scene3d.add(rim);
+
+    function edged(mesh, color){
+      const edges = new THREE.EdgesGeometry(mesh.geometry);
+      mesh.add(new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color !== undefined ? color : CYAN })));
+      return mesh;
+    }
+
+    const frameMat = new THREE.MeshStandardMaterial({ color: DARK, metalness: 0.4, roughness: 0.5, transparent: true, opacity: 0.95 });
+
+    droneGroup = new THREE.Group();
+
+    // central body
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.18, 0.7), frameMat);
+    edged(body);
+    droneGroup.add(body);
+
+    // camera gimbal
+    const gimbal = new THREE.Mesh(
+      new THREE.SphereGeometry(0.13, 16, 16),
+      new THREE.MeshStandardMaterial({ color: SAFETY, emissive: SAFETY, emissiveIntensity: 0.5, metalness: 0.3, roughness: 0.3 })
+    );
+    gimbal.position.set(0, -0.18, 0.2);
+    droneGroup.add(gimbal);
+
+    // arms + motors + propellers, 4 corners
+    const armPositions = [
+      { x: 1.05, z: 1.05, led: SAFETY },
+      { x: -1.05, z: 1.05, led: 0x35ff8a },
+      { x: 1.05, z: -1.05, led: 0xffffff },
+      { x: -1.05, z: -1.05, led: 0xffffff },
+    ];
+
+    armPositions.forEach((pos) => {
+      const armLen = Math.sqrt(pos.x * pos.x + pos.z * pos.z);
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, armLen, 8), frameMat);
+      arm.rotation.z = Math.PI / 2;
+      arm.rotation.y = Math.atan2(pos.z, pos.x);
+      arm.position.set(pos.x / 2, 0, pos.z / 2);
+      edged(arm, CYAN);
+      droneGroup.add(arm);
+
+      const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.1, 0.14, 10), frameMat);
+      motor.position.set(pos.x, 0.08, pos.z);
+      edged(motor, CYAN);
+      droneGroup.add(motor);
+
+      const propGroup = new THREE.Group();
+      propGroup.position.set(pos.x, 0.17, pos.z);
+      const bladeMat = new THREE.MeshStandardMaterial({ color: 0x1c2a33, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
+      const bladeGeo = new THREE.BoxGeometry(0.62, 0.012, 0.06);
+      const b1 = new THREE.Mesh(bladeGeo, bladeMat);
+      const b2 = new THREE.Mesh(bladeGeo, bladeMat);
+      b2.rotation.y = Math.PI / 2;
+      propGroup.add(b1, b2);
+      droneGroup.add(propGroup);
+      propGroups.push(propGroup);
+
+      const led = new THREE.Mesh(
+        new THREE.SphereGeometry(0.045, 12, 12),
+        new THREE.MeshStandardMaterial({ color: pos.led, emissive: pos.led, emissiveIntensity: 1 })
+      );
+      led.position.set(pos.x, 0.02, pos.z);
+      droneGroup.add(led);
+      navLights.push(led);
+
+      // landing leg
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.42, 6), frameMat);
+      leg.position.set(pos.x * 0.6, -0.28, pos.z * 0.6);
+      leg.rotation.x = pos.z > 0 ? 0.25 : -0.25;
+      leg.rotation.z = pos.x > 0 ? -0.2 : 0.2;
+      droneGroup.add(leg);
+    });
+
+    scene3d.add(droneGroup);
+    resizeDrone();
+  }
+
+  function resizeDrone(){
+    if(!renderer3d || !camera3d || !radarEl) return;
+    const size = radarEl.clientWidth;
+    if(size <= 0) return;
+    renderer3d.setSize(size, size, false);
+    camera3d.aspect = 1;
+    camera3d.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resizeDrone);
+  initDrone();
+
+  // ---------- decode / terminal reveal effect ----------
+  const DECODE_CHARS = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&';
+  function decodeText(el){
+    if(!el || el.dataset.decoded) return;
+    el.dataset.decoded = '1';
+    const final = el.textContent;
+    let frame = 0;
+    const totalFrames = final.length * 2;
+    const timer = setInterval(() => {
+      frame++;
+      const revealCount = Math.floor(frame / 2);
+      el.textContent = final.split('').map((ch, i) => {
+        if(ch === ' ' || /[·\/,.:%°+]/.test(ch)) return ch;
+        if(i < revealCount) return final[i];
+        return DECODE_CHARS[Math.floor(Math.random() * DECODE_CHARS.length)];
+      }).join('');
+      if(frame >= totalFrames){
+        el.textContent = final;
+        clearInterval(timer);
+      }
+    }, 32);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if(entry.isIntersecting){
+        entry.target.querySelectorAll('.stat .num').forEach((el) => decodeText(el));
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.stats').forEach((el) => statObserver.observe(el));
+
+  window.addEventListener('load', () => {
+    setTimeout(() => decodeText(document.getElementById('callsignText')), 500);
+  });
+
+  // ---------- telemetry ticker (decorative, gently drifting) ----------
+  const tAlt = document.getElementById('tAlt'), tSpd = document.getElementById('tSpd'), tHdg = document.getElementById('tHdg');
+  let alt = 118, spd = 42, hdg = 274;
+  setInterval(() => {
+    alt = Math.max(80, Math.min(160, alt + (Math.random() * 6 - 3)));
+    spd = Math.max(25, Math.min(60, spd + (Math.random() * 4 - 2)));
+    hdg = (hdg + (Math.random() * 6 - 3) + 360) % 360;
+    if(tAlt){ tAlt.textContent = Math.round(alt); }
+    if(tSpd){ tSpd.textContent = Math.round(spd); }
+    if(tHdg){ tHdg.textContent = Math.round(hdg); }
+  }, 1400);
+
+  // ---------- project row tilt on hover ----------
+  document.querySelectorAll('.proj').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(700px) rotateX(${(-py * 4).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = 'none'; });
+  });
+
+  // ---------- master animation loop ----------
+  function tick(){
+    // cursor
+    if(cursorDot){ cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`; }
+    ringX += (mouseX - ringX) * 0.22;
+    ringY += (mouseY - ringY) * 0.22;
+    if(cursorRing){ cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`; }
+
+    // drone banking toward cursor + propeller spin + gentle hover bob
+    if(droneGroup && radarEl){
+      const rect = radarEl.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = mouseX - cx, dy = mouseY - cy;
+      targetRoll = Math.max(-0.32, Math.min(0.32, dx / 260));
+      targetPitch = Math.max(-0.22, Math.min(0.22, dy / 300));
+      curRoll += (targetRoll - curRoll) * 0.08;
+      curPitch += (targetPitch - curPitch) * 0.08;
+      droneGroup.rotation.z = -curRoll;
+      droneGroup.rotation.x = curPitch;
+      droneGroup.position.y = Math.sin((performance.now() - clockStart) / 900) * 0.06;
+      droneGroup.rotation.y += 0.0025;
+
+      propGroups.forEach((p) => { p.rotation.y += 0.55; });
+
+      const blink = Math.abs(Math.sin((performance.now() - clockStart) / 500));
+      navLights.forEach((l) => { l.material.emissiveIntensity = 0.4 + blink * 0.8; });
+
+      if(renderer3d && scene3d && camera3d){ renderer3d.render(scene3d, camera3d); }
+    }
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+</script>
+</body>
+</html>
